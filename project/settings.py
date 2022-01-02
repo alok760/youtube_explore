@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['localhost']
 INSTALLED_APPS = [
     'youtube_explore',
     'corsheaders',
+    # 'django_cron',
     'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +53,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CRON_CLASSES = [
+#     "youtube_explore.cron.VideoFeeder",
+# ]
 
 CORS_ALLOWED_ORIGINS = [
 "http://localhost:3000",

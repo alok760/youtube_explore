@@ -6,24 +6,37 @@ import axios from 'axios';
 function Layout() {
 
   const [videoData, setVideoData] = useState([]);
+  const [search, setSearch] = useState(null);
+  const [sort, setSort] = useState('desc');
+  const [input, setInput] = useState('');
   
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get("http://localhost:8000/search");
+      const params = {
+        search: search,
+        sort: sort
+      }
+      const response = await axios.get("http://localhost:8000/search", {params: params});
       setVideoData(response.data);
-      // debugger;
     }
+    debugger;
     fetchData();
-  }, [])
+  }, [search, sort])
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      setSearch(input);
+    }
+  }
+
 
   function renderCard(video) {
-    // debugger;
     const videoUrl = `https://www.youtube.com/watch?v=${video.pk}`
     return <>
-      <div className="card my-2" style={{width: '70%'}}>
+      <div className="card my-2" style={{width: '100%'}}>
         <div className="row no-gutters">
-            <div className="col-sm-5">
-              <a href={videoUrl} target="_blank" rel="noreferrer"> <img className="card-img m-2" src={video.fields.thumbnail_url} alt="Suresh Dasari Card"/> </a>
+            <div className="col-md-3 ">
+              <a href={videoUrl} target="_blank" rel="noreferrer"> <img className="card-img m-2" src={video.fields.thumbnail_url} alt="youtube video description"/> </a>
             </div>
             <div className="col-sm-7">
                 <div className="card-body">
@@ -38,7 +51,6 @@ function Layout() {
   }
 
   function renderCards() {
-    // debugger;
     return <>
       {videoData.map((video)=>renderCard(video))}
     </>;
@@ -48,22 +60,36 @@ function Layout() {
   return <>
 <main role="main">
 
-      <section className="jumbotron text-center">
+      <section className="jumbotron py-3 text-center">
         <div className="container">
-          <h1 className="jumbotron-heading">Album example</h1>
-          <p className="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-          <p>
-            <a href="#" className="btn btn-primary my-2">Main call to action</a>
-            <a href="#" className="btn btn-secondary my-2">Secondary action</a>
-          </p>
+          <h1 className="jumbotron-heading">Youtube Video Search</h1>
+          {/* <p className="lead text-muted">Search Education Related Videos Here</p> */}
+          <div className="form-inline my-2 my-lg-0">
+            <input className="form-control mr-sm-2 w-75 py-2"
+              type="search"
+              value={input}
+              onInput={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search Education Related Videos Here" aria-label="Search"
+            />
+            <button className="btn btn-outline-success my-2 my-sm-0" onClick={()=>setSearch(input)}> Search</button>
+          </div>
         </div>
       </section>
 
-      <div className="album py-5 bg-light">
+      <div className="album py-3 bg-light">
         <div className="container">
-
           <div className="row">
-            {videoData && renderCards()}
+            <div className="col-md-10">
+              {videoData && renderCards()}
+            </div>
+            <div className="col text-center">
+            <label for="sel1">Sort By:</label>
+            <select class="form-control" onChange={e => setSort(e.target.value)} id="sel1">
+              <option value="desc">Newest First</option>
+              <option value="asc">Oldest First</option>
+            </select>
+            </div>
           </div>
         </div>
       </div>
