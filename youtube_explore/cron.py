@@ -1,13 +1,16 @@
 from datetime import datetime
 from .models import Video
 import requests
+from secrets import SECRETS
 
 def my_scheduled_job():
+    breakpoint()
+    
     headers = {
     'Accept': 'application/json',
     }
     params = {
-        'key': 'AIzaSyDHEKkOM6E4x_91sOTx-MFeGP2fYLR7i-I',
+        'key': SECRETS['YOUTUBE_API_KEYS'][0],
         'part': 'snippet',
         'maxResults': 50,
         'order': 'date',
@@ -15,7 +18,13 @@ def my_scheduled_job():
         'publishedAfter': '2020-01-01T00:00:00Z',
         'q': 'education'
     }
-    response = requests.get('https://youtube.googleapis.com/youtube/v3/search', headers=headers, params=params)
+    for attempt in range(len(SECRETS['YOUTUBE_API_KEYS'])):
+        try:
+            response = requests.get('https://youtube.googleapis.com/youtube/v3/search', headers=headers, params=params)
+        except:
+            params['key']=SECRETS['YOUTUBE_API_KEYS'][attempt+1]
+        else:
+            break
     response_json = response.json()
     for item in response_json['items']:
         video = Video(

@@ -2,11 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Video(models.Model):
-    # artist = models.ForeignKey(Musician, on_delete=models.CASCADE)
-    # name = models.CharField(max_length=100)
-    # release_date = models.DateField()
-    # num_stars = models.IntegerField()
-    # TODO: add indexes
     video_id = models.CharField(max_length=100, primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
