@@ -1,6 +1,18 @@
-import React from "react"
+import { useEffect, useState } from "react";
+
+import React from "react";
+import axios from 'axios';
 
 function Layout() {
+
+  const [videoData, setVideoData] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get("http://localhost:8000/search");
+      debugger;
+    }
+    fetchData();
+  }, [])
 
   function renderCard() {
     return <>

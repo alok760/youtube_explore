@@ -33,7 +33,7 @@ def index(request):
             thumbnail_url = item['snippet']['thumbnails']['default']['url']
         )
         video.save()
-        breakpoint()
+        # breakpoint()
     return HttpResponse("Hello, World!")
 
 
@@ -48,8 +48,8 @@ def get(request):
     return HttpResponse(response_data, content_type='application/json')
 
 def search(request):
-    page = int(request.GET['page'])
-    page_size = int(request.GET['page_size'])
+    page = int(request.GET.get('page', 1))
+    page_size = int(request.GET.get('page_size', 20))
     OFFSET = page_size * (page - 1)
     LIMIT = page_size
     query = Video.objects.all()[OFFSET:OFFSET+LIMIT]
