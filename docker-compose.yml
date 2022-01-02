@@ -11,12 +11,15 @@ services:
 
   youtubeexplore:
     image: youtubeexplore
+    environment:
+      - ES_URL=es:9200
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - 8000:8000
-    command: ["./wait-for-it.sh", "db:5432", "--", "gunicorn", "--bind", "0.0.0.0:8000", "project.wsgi"]
+    entrypoint: ["./entrypoint_compose.sh"]
+    # command: ["./wait-for-it.sh", "db:9200", "--", "gunicorn", "--bind", "0.0.0.0:8000", "project.wsgi"]
   frontend:
     image: frontend
     build:

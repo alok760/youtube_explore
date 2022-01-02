@@ -1,3 +1,0 @@
-SECRETS={
-    'YOUTUBE_API_KEYS': ['key1', 'AIzaSyDHEKkOM6E4x_91sOTx-MFeGP2fYLR7i-I']
-}

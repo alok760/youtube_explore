@@ -8,10 +8,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
-ENV ES_URL='es:9200'
 
 # Install pip requirements
 RUN python -m pip install pipenv
+RUN apt-get update && apt-get -y install cron
 RUN apt install -y git
 
 WORKDIR /app
@@ -24,6 +24,8 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 RUN chmod 755 ./entrypoint.sh
+RUN chmod 755 ./entrypoint_compose.sh
+RUN chmod 755 ./wait-for-it.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
 

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
 import CONSTANTS from "./constants";
+import InfiniteScroll from 'react-infinite-scroll-component';
 import React from "react";
 import axios from 'axios';
+
+// import json
 
 function Layout() {
 
@@ -10,17 +13,34 @@ function Layout() {
   const [search, setSearch] = useState(null);
   const [sort, setSort] = useState('desc');
   const [input, setInput] = useState('');
-  
-  useEffect(() => {
-    async function fetchData() {
-      const params = {
-        search: search,
-        sort: sort
-      }
-      const response = await axios.get(CONSTANTS.apiUrl, {params: params});
-      setVideoData(response.data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true)
+
+  async function fetchData(opts) {
+    const page = opts && opts.reset ? 1 : currentPage;
+    const params = {
+      search: search,
+      sort: sort,
+      page: page,
+      page_size: 10
     }
-    fetchData();
+    const response = await axios.get(CONSTANTS.apiUrl, {params: params});
+    if(response.status === 200)
+    {
+      setCurrentPage(currentPage + 1);
+      if(page===1) {
+        setVideoData(response.data);
+      } else {
+        setVideoData([...videoData, ...response.data]);
+      }
+      if(response.data.length < 10 ) setHasMore(false);
+    } else {
+      window.alert('error in fetching data');
+    }
+  }
+
+  useEffect(() => {
+    fetchData({ reset: true });
   }, [search, sort])
 
   const handleKeyDown = (event) => {
@@ -28,7 +48,6 @@ function Layout() {
       setSearch(input);
     }
   }
-
 
   function renderCard(video) {
     const videoUrl = `https://www.youtube.com/watch?v=${video.pk}`
@@ -55,7 +74,6 @@ function Layout() {
       {videoData.map((video)=>renderCard(video))}
     </>;
   }
-
   
   return <>
 <main role="main">
@@ -81,9 +99,23 @@ function Layout() {
         <div className="container">
           <div className="row">
             <div className="col-md-10">
+              
+            <InfiniteScroll
+              dataLength={videoData.length} //This is important field to render the next data
+              next={fetchData}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+            >
               {videoData && renderCards()}
+            </InfiniteScroll>
+
             </div>
-            <div className="col text-center">
+            <div className="col-md-2 text-center">
             <label for="sel1">Sort By:</label>
             <select class="form-control" onChange={e => setSort(e.target.value)} id="sel1">
               <option value="desc">Newest First</option>

@@ -1,3 +1,4 @@
+from django.http.response import HttpResponseNotModified
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import Video
@@ -37,7 +38,6 @@ def index(request):
     return HttpResponse("Hello, World!")
 
 
-
 def get(request):
     page = int(request.GET['page'])
     page_size = int(request.GET['page_size'])
@@ -56,9 +56,9 @@ def search(request):
         query = sl.to_queryset()
     else:
         query = Video.objects.all()
-    sort = request.GET.get('sort', 'desc')
-    sort_attr = '-published_at' if sort=='desc' else 'published_at'
-    query = query.order_by(sort_attr) 
+        sort = request.GET.get('sort', 'desc')
+        sort_attr = '-published_at' if sort=='desc' else 'published_at'
+        query = query.order_by(sort_attr) 
     OFFSET = page_size * (page - 1)
     LIMIT = page_size
     query = query[OFFSET:OFFSET+LIMIT]
@@ -66,3 +66,4 @@ def search(request):
     return HttpResponse(response_data, content_type='application/json')
 
 # Create your views here.
+
