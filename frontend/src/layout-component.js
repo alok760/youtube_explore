@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import CONSTANTS from "./constants";
 import React from "react";
 import axios from 'axios';
 
@@ -16,10 +17,9 @@ function Layout() {
         search: search,
         sort: sort
       }
-      const response = await axios.get("http://localhost:8000/search", {params: params});
+      const response = await axios.get(CONSTANTS.apiUrl, {params: params});
       setVideoData(response.data);
     }
-    debugger;
     fetchData();
   }, [search, sort])
 

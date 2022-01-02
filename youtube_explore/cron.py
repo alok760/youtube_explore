@@ -4,8 +4,6 @@ import requests
 from secrets import SECRETS
 
 def my_scheduled_job():
-    breakpoint()
-    
     headers = {
     'Accept': 'application/json',
     }
@@ -21,11 +19,14 @@ def my_scheduled_job():
     for attempt in range(len(SECRETS['YOUTUBE_API_KEYS'])):
         try:
             response = requests.get('https://youtube.googleapis.com/youtube/v3/search', headers=headers, params=params)
+            response_json = response.json()
+            print(response_json)
+            if ("error" in response_json): raise Exception("unhandlable response")
         except:
             params['key']=SECRETS['YOUTUBE_API_KEYS'][attempt+1]
         else:
             break
-    response_json = response.json()
+
     for item in response_json['items']:
         video = Video(
             video_id = item['id']['videoId'], 

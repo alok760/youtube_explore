@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  es:
+    container_name: elastic
+    image: elasticsearch:7.8.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+  youtubeexplore:
+    image: youtubeexplore
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    command: ["./wait-for-it.sh", "db:5432", "--", "gunicorn", "--bind", "0.0.0.0:8000", "project.wsgi"]
+  frontend:
+    image: frontend
+    build:
+      context: frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
