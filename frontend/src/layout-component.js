@@ -17,17 +17,19 @@ function Layout() {
   }, [])
 
   function renderCard(video) {
+    // debugger;
+    const videoUrl = `https://www.youtube.com/watch?v=${video.pk}`
     return <>
-      <div className="card" >
+      <div className="card my-2" style={{width: '70%'}}>
         <div className="row no-gutters">
             <div className="col-sm-5">
-                <img className="card-img" src="/images/defaultimg.png" alt="Suresh Dasari Card"/>
+              <a href={videoUrl} target="_blank" rel="noreferrer"> <img className="card-img m-2" src={video.fields.thumbnail_url} alt="Suresh Dasari Card"/> </a>
             </div>
             <div className="col-sm-7">
                 <div className="card-body">
-                    <h5 className="card-title">Suresh Dasari</h5>
-                    <p className="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p>
-                    <a href="/something" className="btn btn-primary">View Profile</a>
+                    <h5 className="card-title">{video.fields.title}</h5>
+                    <p className="card-text">{video.fields.description}</p>
+                    <a href={videoUrl} target="_blank" rel="noreferrer" className="btn btn-primary">View on Youtube </a>
                 </div>
             </div>
         </div>
