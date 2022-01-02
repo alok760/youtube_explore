@@ -6,15 +6,17 @@ import axios from 'axios';
 function Layout() {
 
   const [videoData, setVideoData] = useState([]);
+  
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get("http://localhost:8000/search");
-      debugger;
+      setVideoData(response.data);
+      // debugger;
     }
     fetchData();
   }, [])
 
-  function renderCard() {
+  function renderCard(video) {
     return <>
       <div className="card" >
         <div className="row no-gutters">
@@ -31,6 +33,13 @@ function Layout() {
         </div>
       </div>
     </>
+  }
+
+  function renderCards() {
+    // debugger;
+    return <>
+      {videoData.map((video)=>renderCard(video))}
+    </>;
   }
 
   
@@ -52,8 +61,7 @@ function Layout() {
         <div className="container">
 
           <div className="row">
-            {renderCard()}
-            {renderCard()}
+            {videoData && renderCards()}
           </div>
         </div>
       </div>
