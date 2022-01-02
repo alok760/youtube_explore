@@ -3,7 +3,7 @@ from django_elasticsearch_dsl.registries import registry
 from .models import Video
 
 @registry.register_document
-class CategoryDocument(Document):
+class VideoDocument(Document):
     class Index:
         name = 'video'
     settings = {
