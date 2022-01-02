@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 requests = "*"
 django-cors-headers = "*"
+django-elasticsearch-dsl = {editable = true, git = "https://github.com/django-es/django-elasticsearch-dsl.git"}
 
 [dev-packages]
 

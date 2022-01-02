@@ -12,15 +12,15 @@ def index(request):
     params = {
         'key': 'AIzaSyDHEKkOM6E4x_91sOTx-MFeGP2fYLR7i-I',
         'part': 'snippet',
-        'maxResults': 5,
+        'maxResults': 50,
         'order': 'date',
         'type': 'video',
         'publishedAfter': '2020-01-01T00:00:00Z',
         'q': 'education'
     }
-    # response = requests.get('https://youtube.googleapis.com/youtube/v3/search', headers=headers, params=params)
-    # response_json = response.json()
-    from .response import response_json
+    response = requests.get('https://youtube.googleapis.com/youtube/v3/search', headers=headers, params=params)
+    response_json = response.json()
+    # from .response import response_json
     for item in response_json['items']:
         video = Video(
             video_id = item['id']['videoId'], 

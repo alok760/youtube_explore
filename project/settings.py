@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['localhost']
 INSTALLED_APPS = [
     'youtube_explore',
     'corsheaders',
+    'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +56,12 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
 "http://localhost:3000",
 ]
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 ROOT_URLCONF = 'project.urls'
 
