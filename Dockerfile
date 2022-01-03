@@ -27,6 +27,9 @@ RUN chmod 755 ./entrypoint.sh
 RUN chmod 755 ./entrypoint_compose.sh
 RUN chmod 755 ./wait-for-it.sh
 
+RUN python manage.py crontab add
+RUN python manage.py migrate
+
 ENTRYPOINT ["./entrypoint.sh"]
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
