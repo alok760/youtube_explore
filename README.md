@@ -52,7 +52,9 @@ Response:
 
 
 ## Project Setup
-### 
+### Configuration
+- Edit `config.py` and add youtuve API v3 keys (1 or more)
+
 ### Docker Compose
 - `docker-compose build`
 - `docker-compose up`
@@ -69,3 +71,4 @@ Response:
 - `python manage.py migrate`
 - `python manage.py crontab add`
 - `python manage.py runserver`
+Note: Edit `apiUrl` in `frontend/src/constants.js` and `CORS_ALLOWED_ORIGINS` in `frontend/src/constants.js` if not running on localhost
